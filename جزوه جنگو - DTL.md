@@ -47,8 +47,8 @@ https://www.w3schools.com/django/django_ref_filter.php
 <div dir="rtl">
 متد is_active برای اینه که وقتی جایی میخوایم کاربر رو دلیت بکنیم، دلیتش نکنیم! به جاش اینو True بذاریم. اینطوری اشیا وابسته به این یوزر بی خانمان نمیشن!
 </div>
----
 
+---
 حلقه ساده
 ```django
 {% for x in fruits %}
@@ -103,7 +103,11 @@ https://www.w3schools.com/django/django_ref_filter.php
 | forloop.revcounter  | اگه پیمایش برعکس خواستیم انجام بدیم          |
 | forloop.revcounter0 | پیمایش برعکس و شروع هم از صفر                |
 | forloop.parentloop  | دسترسی به شمارنده حلقه والد                  |
+
+<div dir="rtl">
 مثال از forloop.first :
+</div>
+
 ```django
 <ul>
   {% for x in fruits %}
