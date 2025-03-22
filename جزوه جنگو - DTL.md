@@ -44,7 +44,9 @@ https://www.w3schools.com/django/django_ref_filter.php
 - `is_active`
 - `is_staff `
 - `is_superuser`
+<div dir="rtl">
 متد is_active برای اینه که وقتی جایی میخوایم کاربر رو دلیت بکنیم، دلیتش نکنیم! به جاش اینو True بذاریم. اینطوری اشیا وابسته به این یوزر بی خانمان نمیشن!
+</div>
 ---
 
 حلقه ساده
