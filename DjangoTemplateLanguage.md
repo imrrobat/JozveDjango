@@ -163,10 +163,13 @@ categories = [
 </ul>
 ```
 <hr>
-### تگ‌های مهم و کاربردی دیگر
+###تگ‌های مهم و کاربردی دیگر
+
 یک: autoescape
+
 این آن و آف داره و به شکل پیشفرض روشن هستش و اگر روشن باشه:
-- `<` is converted to `&lt;`
+
+- `<` is converted to `&lt;` 
 - `>` is converted to `&gt;`
 - `'` is converted to `'`
 - `"` is converted to `"`
