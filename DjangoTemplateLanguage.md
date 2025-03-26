@@ -162,3 +162,182 @@ categories = [
   </li>
 </ul>
 ```
+<hr>
+### تگ‌های مهم و کاربردی دیگر
+یک: autoescape
+این آن و آف داره و به شکل پیشفرض روشن هستش و اگر روشن باشه:
+- `<` is converted to `&lt;`
+- `>` is converted to `&gt;`
+- `'` is converted to `'`
+- `"` is converted to `"`
+- `&` is converted to `&amp;`
+
+```django
+{% autoescape on %}
+  <h1>{{ heading }}</h1>
+{% endautoescape %}
+```
+
+دو:comment
+مثل کامنت‌ها توی برنامه‌نویسی هستش و استفاده اش اینطوریه:
+```django
+{% comment %}
+  <h1>Greetings!</h2>
+{% endcomment %}
+```
+
+سه:lorem
+میتونیم یه متن برای پر کردن سایت بسازیم:
+```django
+{% lorem 50 w %}
+```
+چهار:now
+برای نشون دادن زمان و تایم و اینا:
+```django
+{% now "Y-m-d | H:i:s" %}
+```
+پنج: verbatim
+برای اینه که بعضی از قسمت ها رو بگیم تمپلیت رندر نکنه:
+```django
+{% verbatim %}
+  {% for x in fruits %}
+    <h1>{{ x }}</h1>
+  {% endfor %}
+{% endverbatim %}
+```
+شش:filter
+نشون دادن یه بخشی به شکل دیگه ای! مثلا:
+```django
+{% filter upper %}
+  <p>Have a great day!</p>
+{% endfilter %}
+```
+فیلترهای مختلفی وجود داره ولی خب بازم بهتره که اونطوری که توی بخش اول گفتم استفاده کنید. اما اینم هست! البته این برای اعمال فیلتر به چند خط، کاربردی تره.
+<hr>
+هفت: cycle و resetcycle
+اگر بخوایم بین چند مقدار هی سوییچ بکنیم از این استفاده میکنیم. مثالش:
+```django
+<ul>
+{% for x in fruits %}
+  <li style='color:{% cycle 'red' 'green' 'blue' 'pink' %}'>
+    {{ x }}
+  </li>
+{% endfor %}
+</ul>
+```
+
+```django
+<ul>
+  {% for x in fruits %}
+    <li style='color:{% cycle 'red' 'green' 'blue' 'pink' %}'>
+      {{ x }}
+    </li>
+    {% if x == "Banana" %}
+      {% resetcycle %}
+    {% endif %}
+  {% endfor %}
+</ul>
+```
+هشت: url
+برای آدرس دادن به یک url هستش. استفاده ساده:
+``` django
+{% url 'some-url-name'%}
+```
+میتونیم به این url یه سری چیز میز هم بفرستیم:
+``` django
+{% url 'some-url-name' data1 data2 %}
+
+in urls.py
+path('/profile/<int:data1>/<int:data2>', name='some-url-name')
+```
+میتونیم به این دیتا ها اسم هم بدیم:
+``` django
+{% url 'some-url-name' a=data1 b=data2 %}
+
+in urls.py
+path('/profile/<int:a>/<int:b>', name='some-url-name')
+```
+نکته: اگر ترکیبی بخوایم از آرگومان‌های موقعیتی و کلیدی استفاده کنیم اولویت با موقعیتی‌هاست و بعد با کلیدیها
+
+میتونیم یه url تعریف کنیم و بعد جاهای مختلفی استفاده کنیم ازش:
+``` django
+{% url 'some-url-name' arg1 arg2 as the_url %}
+
+<a href="{{ the_url }}">I'm linking to {{ the_url }}</a>
+```
+نه: templatetag
+برای اینه که بخوایم کدهای DTL رو نشون بدیم! اجرا نکنیم! 
+```django
+{% templatetag openblock %} for item in items {% templatetag closeblock %}
+   {{ item }}
+{% templatetag openblock %} endfor {% templatetag closeblock %}
+```
+لیست تمپلیت تگ ها رو نشون بده.
+
+ده: spaceless
+این تگ برای اینه که کد HTML رو فشرده تر کنیم و حجمش رو بیاریم پایین و سریع تر بشه. توی سورس فهمیده میشه.
+```django
+{% spaceless %}
+
+        <ul>
+
+          {% for x in fruits %}
+
+            <li>{{ x }}</li>
+
+          {% endfor %}
+
+        </ul>
+        
+{% endspaceless %}
+```
+
+یازده: widthratio
+مثال رو ببین:
+```django
+<h2>{% widthratio 4 10 100 %}%</h2>
+```
+مقدار فعلی: 4 
+مقدار کل: 10
+مقدار ماکزیمم (برای اون چیزی که نهایی میشه): 100
+
+دوازده: regroup
+اگر یه سری دیتای مرتب شده داشته باشیم، میتونیم اونو به دسته های مختلف تقسیمش کنیم و نمایشش بدیم مثلا:
+```django
+{% regroup cars by brand as newlist %}
+
+{% for x in newlist %}
+  <h1>{{ x.grouper }}</h1>
+  {% for y in x.list %}
+    <p>{{ y.model }}: {{ y.year }}</p>
+  {% endfor %}
+{% endfor %}
+```
+
+سیزده: ifchanged
+با این میتونیم چک کنیم یه مقداری عوض شده یا نه. مثلا ببین:
+```django
+{% for x in mylist %}
+    {% ifchanged %}
+      <li>{{ x }}</li>
+    {% endifchanged %}
+  {% endfor %}
+```
+این x رو فقط وقتی عوض بشه چاپ میکنه.
+این مثال بهتره:
+```django
+{% for x in cars %}
+  {% ifchanged x.brand %}
+    <h1>{{ x.brand }}:</h1>
+  {% endifchanged %}
+  <p>{{ x.model }}, {{ x.year }}</p>
+{% endfor %}
+```
+
+چهارده: firstof
+با این تگ میتونیم اولین متغیری که خالی نیست رو چاپ کنیم مثلا ببین:
+```django
+{% firstof user.nickname user.full_name "کاربر مهمان" %}
+```
+اگر نیک نیم نباشه یا فول نیم هم حتی نباشه در نهایت کاربر میهمان رو مینویسه.
+پس اولین متغیری که `None` یا مقدار خالی (`""`، `[]`، `{}`، `0`، `False`) نباشه رو برامون چاپ میکنه.
